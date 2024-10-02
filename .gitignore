@@ -1,0 +1,51 @@
+# Directorio bin (binarios compilados)
+bin/
+
+# Archivos ejecutables generados por Go
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Archivos de compilación y caché
+*.out
+*.test
+*.log
+
+# Caché de módulos de Go
+/go/pkg/*
+/go/bin/*
+/go/cache/*
+/go/mod/cache
+
+# Archivos de dependencias (mod y sum)
+# Solo si no deseas rastrear estos archivos; sin embargo, en la mayoría de los casos, se recomienda incluir go.mod y go.sum.
+# go.mod
+# go.sum
+
+# Directorio vendor (si estás usando `go mod vendor`)
+vendor/
+
+# Configuraciones específicas del entorno o IDEs
+.idea/
+.vscode/
+*.swp
+
+# Dependencias de bibliotecas estáticas de otros lenguajes (ej. C/C++)
+*.a
+
+# Archivos de caché y log de GoLand / JetBrains IDEs
+.idea/*
+*.iml
+
+# Caché de GORM
+*.gorm.db
+
+# Archivos de compilación de Go 1.11+ (Caché de módulos)
+go.sum
+go.work
+go.work.sum
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
