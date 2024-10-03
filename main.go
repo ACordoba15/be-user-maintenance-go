@@ -19,6 +19,7 @@ func main() {
 
 	r.HandleFunc("/", routes.HomeHandler)
 
+	// USER
 	r.HandleFunc("/api/user/all", routes.GetUsersHandler).Methods("GET")
 	r.HandleFunc("/api/user/{id}", routes.GetUserHandler).Methods("GET")
 	r.HandleFunc("/api/user", routes.PostUserHandler).Methods("POST")
@@ -26,5 +27,12 @@ func main() {
 	r.HandleFunc("/api/user/{id}", routes.PutUserHandler).Methods("PUT")
 	r.HandleFunc("/api/user/{id}", routes.DeleteUserHandler).Methods("DELETE")
 
-	http.ListenAndServe(":5500", r)
+	// RECORD
+	r.HandleFunc("/api/record/all", routes.GetRecordHandler).Methods("GET")
+	r.HandleFunc("/api/record/{id}", routes.GetRecordHandler).Methods("GET")
+	r.HandleFunc("/api/record", routes.PostRecordHandler).Methods("POST")
+	r.HandleFunc("/api/record/{id}", routes.PutRecordHandler).Methods("PUT")
+	r.HandleFunc("/api/record/{id}", routes.DeleteRecordHandler).Methods("DELETE")
+
+	http.ListenAndServe(":8000", r)
 }

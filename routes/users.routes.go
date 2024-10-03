@@ -57,7 +57,7 @@ func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
 	db.DB.First(&user, params["id"])
 
 	if user.ID == 0 {
-		w.WriteHeader(http.StatusNotFound)
+		w.WriteHeader(http.StatusNotFound) // 404
 		w.Write([]byte("User Not Found"))
 		return
 	}
@@ -65,5 +65,4 @@ func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
 	db.DB.Delete(&user) // Borrado lógico
 	// db.DB.Unscoped().Delete(&user) // Borrado físico
 	w.WriteHeader(http.StatusOK)
-
 }
