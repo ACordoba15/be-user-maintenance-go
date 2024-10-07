@@ -10,6 +10,8 @@
 - `./<name>` ejecuta el programa.
 - `go run <name>.go` Crear el build y lo ejecuta.
 
+- `go mod tidy` Ejecuta y limpia dependencias
+
 ## Librerías a utilizar 
 [Gorilla Mux](https://github.com/gorilla/mux)
 - `go get -u github.com/gorilla/mux` Instalación

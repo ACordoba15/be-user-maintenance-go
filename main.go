@@ -26,7 +26,7 @@ func main() {
 	r := mux.NewRouter()
 
 	// Endpoint de Swagger
-	r.PathPrefix("/swagger/*any").Handler(httpSwagger.WrapHandler)
+	r.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
 	r.HandleFunc("/", routes.HomeHandler)
 

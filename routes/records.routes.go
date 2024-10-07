@@ -58,6 +58,7 @@ func GetRecordHandler(w http.ResponseWriter, r *http.Request) {
 func PostRecordHandler(w http.ResponseWriter, r *http.Request) {
 	var record models.Record
 	json.NewDecoder(r.Body).Decode(&record)
+	defer r.Body.Close()
 
 	newrecord := db.DB.Create(&record)
 	err := newrecord.Error
@@ -66,6 +67,7 @@ func PostRecordHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest) // 400
 		w.Write([]byte(err.Error()))
 	}
+
 	json.NewEncoder(w).Encode(&record)
 }
 
@@ -74,9 +76,32 @@ func PostRecordHandler(w http.ResponseWriter, r *http.Request) {
 // @Description Actualiza la información de un registro.
 // @Tags record
 // @Produce plain
+// @Success 200 {object} models.Record
+// @Failure 400 {string} string "Bad Request"
 // @Router /record/{id} [put]
 func PutRecordHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Put Record"))
+	var record models.Record
+	var newRecord models.Record
+	params := mux.Vars(r) // Obtiene los params
+	db.DB.First(&record, params["id"])
+
+	defer r.Body.Close() // Libera recursos
+
+	if record.ID == 0 {
+		w.WriteHeader(http.StatusNotFound) // 404
+		w.Write([]byte("Record Not Found"))
+		return
+	}
+
+	err := json.NewDecoder(r.Body).Decode(&newRecord)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Invalid request payload"))
+		return
+	}
+	record.Action = newRecord.Action
+	db.DB.Save(&record)
+	json.NewEncoder(w).Encode(&record)
 }
 
 // DeleteRecordHandler elimina un registro por su ID.

@@ -94,7 +94,15 @@ paths:
       description: Actualiza la información de un registro.
       produces:
       - text/plain
-      responses: {}
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Record'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
       summary: Actualiza un registro
       tags:
       - record
@@ -187,7 +195,15 @@ paths:
       description: Actualiza la información de un registro.
       produces:
       - text/plain
-      responses: {}
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
       summary: Actualiza un registro
       tags:
       - user

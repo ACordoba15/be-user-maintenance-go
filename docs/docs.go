@@ -121,7 +121,20 @@ const docTemplate = `{
                     "record"
                 ],
                 "summary": "Actualiza un registro",
-                "responses": {}
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Record"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             },
             "delete": {
                 "description": "Realiza el borrado lógico de un registro específico.",
@@ -300,7 +313,20 @@ const docTemplate = `{
                     "user"
                 ],
                 "summary": "Actualiza un registro",
-                "responses": {}
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             },
             "delete": {
                 "description": "Realiza el borrado lógico de un registro específico.",

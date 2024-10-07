@@ -88,9 +88,32 @@ func PostUserHandler(w http.ResponseWriter, r *http.Request) {
 // @Description Actualiza la información de un registro.
 // @Tags user
 // @Produce plain
+// @Success 200 {object} models.User
+// @Failure 400 {string} string "Bad Request"
 // @Router /user/{id} [put]
 func PutUserHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Put User"))
+	var user models.User
+	var newUser models.User
+	params := mux.Vars(r) // Obtiene los params
+	db.DB.First(&user, params["id"])
+
+	defer r.Body.Close() // Libera recursos
+
+	if user.ID == 0 {
+		w.WriteHeader(http.StatusNotFound) // 404
+		w.Write([]byte("User Not Found"))
+		return
+	}
+
+	err := json.NewDecoder(r.Body).Decode(&newUser)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Invalid request payload"))
+		return
+	}
+	user.Password = newUser.Password
+	db.DB.Save(&user)
+	json.NewEncoder(w).Encode(&user)
 }
 
 // DeleteUserHandler elimina un registro por su ID.
