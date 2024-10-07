@@ -8,6 +8,7 @@ import (
 	"github.com/ACordoba15/be-user-maintenance/models"
 	"github.com/ACordoba15/be-user-maintenance/routes"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
@@ -30,6 +31,13 @@ func main() {
 
 	r.HandleFunc("/", routes.HomeHandler)
 
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},                            // Permitir todos los orígenes, puedes especificar orígenes específicos aquí.
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"}, // Métodos permitidos
+		AllowedHeaders:   []string{"Authorization", "Content-Type"},
+		AllowCredentials: true,
+	})
+
 	// USER
 	r.HandleFunc("/api/user/all", routes.GetUsersHandler).Methods("GET")
 	r.HandleFunc("/api/user/{id}", routes.GetUserHandler).Methods("GET")
@@ -39,11 +47,14 @@ func main() {
 	r.HandleFunc("/api/user/{id}", routes.DeleteUserHandler).Methods("DELETE")
 
 	// RECORD
-	r.HandleFunc("/api/record/all", routes.GetRecordHandler).Methods("GET")
+	r.HandleFunc("/api/record/all", routes.GetRecordsHandler).Methods("GET")
 	r.HandleFunc("/api/record/{id}", routes.GetRecordHandler).Methods("GET")
 	r.HandleFunc("/api/record", routes.PostRecordHandler).Methods("POST")
 	r.HandleFunc("/api/record/{id}", routes.PutRecordHandler).Methods("PUT")
 	r.HandleFunc("/api/record/{id}", routes.DeleteRecordHandler).Methods("DELETE")
 
-	http.ListenAndServe(":8000", r)
+	// Envolver el router con el middleware de CORS
+	handler := c.Handler(r)
+
+	http.ListenAndServe(":8000", handler)
 }

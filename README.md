@@ -25,6 +25,9 @@
 - `go get -u gorm.io/gorm`
 - `gorm.io/driver/sqlserver` Instalamos sql server
 
+CORS
+- `go get -u github.com/rs/cors`
+
 [Swagger](https://github.com/swaggo/swag?tab=readme-ov-file#getting-started)
 - `go install github.com/swaggo/swag/cmd/swag@latest`
 - `go get -u github.com/swaggo/http-swagger`
