@@ -23,6 +23,10 @@
 - `go get -u gorm.io/gorm`
 - `gorm.io/driver/sqlserver` Instalamos sql server
 
+[Swagger](https://github.com/swaggo/swag?tab=readme-ov-file#getting-started)
+- `go install github.com/swaggo/swag/cmd/swag@latest`
+- `go get -u github.com/swaggo/http-swagger`
+- `go get -u github.com/swaggo/files`
 
 ## DB
 - `docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Prueba001." -p 1433:1433 -d mcr.microsoft.com/mssql/server:2022-latest`

@@ -4,11 +4,19 @@ import (
 	"net/http"
 
 	"github.com/ACordoba15/be-user-maintenance/db"
+	_ "github.com/ACordoba15/be-user-maintenance/docs"
 	"github.com/ACordoba15/be-user-maintenance/models"
 	"github.com/ACordoba15/be-user-maintenance/routes"
 	"github.com/gorilla/mux"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
+// @title API de ejemplo con Swagger y Gorilla Mux
+// @version 1.0
+// @description Esta es una API en Go documentada con Swagger y usando Gorilla Mux.
+
+// @host localhost:8000
+// @BasePath /api/
 func main() {
 
 	db.DBConnection()
@@ -16,6 +24,9 @@ func main() {
 	db.DB.AutoMigrate(models.User{})
 
 	r := mux.NewRouter()
+
+	// Endpoint de Swagger
+	r.PathPrefix("/swagger/*any").Handler(httpSwagger.WrapHandler)
 
 	r.HandleFunc("/", routes.HomeHandler)
 

@@ -1,0 +1,236 @@
+basePath: /api/
+definitions:
+  models.Record:
+    properties:
+      action:
+        type: string
+      username:
+        type: string
+    type: object
+  models.User:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: Esta es una API en Go documentada con Swagger y usando Gorilla Mux.
+  title: API de ejemplo con Swagger y Gorilla Mux
+  version: "1.0"
+paths:
+  /record:
+    post:
+      consumes:
+      - application/json
+      description: Agrega un nuevo registro a la base de datos.
+      parameters:
+      - description: Información del nuevo registro
+        in: body
+        name: record
+        required: true
+        schema:
+          $ref: '#/definitions/models.Record'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Record'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Crea un nuevo registro
+      tags:
+      - record
+  /record/{id}:
+    delete:
+      description: Realiza el borrado lógico de un registro específico.
+      parameters:
+      - description: ID del registro
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Record Deleted
+          schema:
+            type: string
+        "404":
+          description: Record Not Found
+          schema:
+            type: string
+      summary: Elimina un registro por ID
+      tags:
+      - record
+    get:
+      description: Retorna un registro específico basado en el ID proporcionado.
+      parameters:
+      - description: ID del registro
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Record'
+        "404":
+          description: Record Not Found
+          schema:
+            type: string
+      summary: Obtiene un registro por ID
+      tags:
+      - record
+    put:
+      description: Actualiza la información de un registro.
+      produces:
+      - text/plain
+      responses: {}
+      summary: Actualiza un registro
+      tags:
+      - record
+  /record/all:
+    get:
+      description: Retorna una lista de todos los registros almacenados en la base
+        de datos.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Record'
+            type: array
+      summary: Obtiene todos los registros
+      tags:
+      - record
+  /user:
+    post:
+      consumes:
+      - application/json
+      description: Agrega un nuevo registro a la base de datos.
+      parameters:
+      - description: Información del nuevo registro
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Record'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Crea un nuevo registro
+      tags:
+      - user
+  /user/{id}:
+    delete:
+      description: Realiza el borrado lógico de un registro específico.
+      parameters:
+      - description: ID del registro
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: User Deleted
+          schema:
+            type: string
+        "404":
+          description: User Not Found
+          schema:
+            type: string
+      summary: Elimina un registro por ID
+      tags:
+      - user
+    get:
+      description: Retorna un registro específico basado en el ID proporcionado.
+      parameters:
+      - description: ID del registro
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "404":
+          description: Record Not Found
+          schema:
+            type: string
+      summary: Obtiene un registro por ID
+      tags:
+      - user
+    put:
+      description: Actualiza la información de un registro.
+      produces:
+      - text/plain
+      responses: {}
+      summary: Actualiza un registro
+      tags:
+      - user
+  /user/all:
+    get:
+      description: Retorna una lista de todos los registros almacenados en la base
+        de datos.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+      summary: Obtiene todos los registros
+      tags:
+      - user
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: Agrega un nuevo registro a la base de datos.
+      parameters:
+      - description: Información del nuevo registro
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Record'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Crea un nuevo registro
+      tags:
+      - user
+swagger: "2.0"

@@ -22,7 +22,7 @@ func DBConnection() {
 	database := "tdusers"    // Nombre de la base de datos
 
 	// Crear la cadena de conexión
-	DSN = fmt.Sprintf("sqlserver://%s:%s@%s:%d?database=%s", user, password, server, port, database)
+	DSN = fmt.Sprintf("sqlserver://%s:%s@%s:%d?database=%s&encrypt=true&trustServerCertificate=true", user, password, server, port, database)
 
 	// Conectarse a la base de datos usando GORM y el driver de SQL Server
 	DB, err = gorm.Open(sqlserver.Open(DSN), &gorm.Config{})
