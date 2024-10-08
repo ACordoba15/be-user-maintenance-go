@@ -2,7 +2,6 @@ package routes
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/ACordoba15/be-user-maintenance/db"
@@ -68,7 +67,6 @@ func LoginUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Printf("user: %s, pass: %s", user.Username, user.Password)
 	// Buscar el usuario por nombre de usuario y contraseña
 	err = db.DB.Where(&models.User{Username: user.Username, Password: user.Password}).First(&userLogin).Error
 
