@@ -3,7 +3,9 @@ package db
 import (
 	"fmt"
 	"log"
+	"os"
 
+	_ "github.com/joho/godotenv/autoload"
 	"gorm.io/driver/sqlserver"
 	"gorm.io/gorm"
 )
@@ -15,14 +17,14 @@ func DBConnection() {
 	var err error
 
 	// Definir los detalles de la conexión
-	server := "localhost"    // Nombre del servidor
-	port := 1433             // Puerto de SQL Server
-	user := "sa"             // Usuario
-	password := "Prueba001." // Contraseña
-	database := "tdusers-go" // Nombre de la base de datos
+	server := os.Getenv("DB_SERVER")     // Nombre del servidor
+	port := os.Getenv("DB_PORT")         // Puerto de SQL Server
+	user := os.Getenv("DB_USER")         // Usuario
+	password := os.Getenv("DB_PASSWORD") // Contraseña
+	database := os.Getenv("DB_NAME")     // Nombre de la base de datos
 
 	// Crear la cadena de conexión
-	DSN = fmt.Sprintf("sqlserver://%s:%s@%s:%d?database=%s&encrypt=true&trustServerCertificate=true&tlsmin=1.0", user, password, server, port, database)
+	DSN = fmt.Sprintf("sqlserver://%s:%s@%s:%s?database=%s&encrypt=true&trustServerCertificate=true&tlsmin=1.0", user, password, server, port, database)
 
 	// Conectarse a la base de datos usando GORM y el driver de SQL Server
 	DB, err = gorm.Open(sqlserver.Open(DSN), &gorm.Config{})

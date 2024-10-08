@@ -27,6 +27,9 @@
 - `go get -u github.com/swaggo/files`
 - `swag init` Actualiza el swagger
 
+[GoDotEnv](https://github.com/joho/godotenv)
+- `go get github.com/joho/godotenv`
+
 ## Ejcutar el programa
 - `go build <name>.go` Crea un build.
 - `./<name>` Ejecuta el programa.
