@@ -152,10 +152,10 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "Record Deleted",
+                    "204": {
+                        "description": "No Content",
                         "schema": {
-                            "type": "string"
+                            "type": "No"
                         }
                     },
                     "404": {
@@ -168,6 +168,30 @@ const docTemplate = `{
             }
         },
         "/user": {
+            "put": {
+                "description": "Actualiza la información de un registro.",
+                "produces": [
+                    "text/plain"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Actualiza un registro",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Agrega un nuevo registro a la base de datos.",
                 "consumes": [
@@ -232,7 +256,7 @@ const docTemplate = `{
         },
         "/user/login": {
             "post": {
-                "description": "Agrega un nuevo registro a la base de datos.",
+                "description": "Valida un usuari registrado.",
                 "consumes": [
                     "application/json"
                 ],
@@ -242,7 +266,7 @@ const docTemplate = `{
                 "tags": [
                     "user"
                 ],
-                "summary": "Crea un nuevo registro",
+                "summary": "Login de usuario",
                 "parameters": [
                     {
                         "description": "Información del nuevo registro",
@@ -304,30 +328,6 @@ const docTemplate = `{
                     }
                 }
             },
-            "put": {
-                "description": "Actualiza la información de un registro.",
-                "produces": [
-                    "text/plain"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "summary": "Actualiza un registro",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.User"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
             "delete": {
                 "description": "Realiza el borrado lógico de un registro específico.",
                 "tags": [
@@ -344,10 +344,10 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "User Deleted",
+                    "204": {
+                        "description": "No Content",
                         "schema": {
-                            "type": "string"
+                            "type": "No"
                         }
                     },
                     "404": {

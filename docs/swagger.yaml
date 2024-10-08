@@ -57,10 +57,10 @@ paths:
         required: true
         type: integer
       responses:
-        "200":
-          description: Record Deleted
+        "204":
+          description: No Content
           schema:
-            type: string
+            type: "No"
         "404":
           description: Record Not Found
           schema:
@@ -148,6 +148,22 @@ paths:
       summary: Crea un nuevo registro
       tags:
       - user
+    put:
+      description: Actualiza la información de un registro.
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Actualiza un registro
+      tags:
+      - user
   /user/{id}:
     delete:
       description: Realiza el borrado lógico de un registro específico.
@@ -158,10 +174,10 @@ paths:
         required: true
         type: integer
       responses:
-        "200":
-          description: User Deleted
+        "204":
+          description: No Content
           schema:
-            type: string
+            type: "No"
         "404":
           description: User Not Found
           schema:
@@ -191,22 +207,6 @@ paths:
       summary: Obtiene un registro por ID
       tags:
       - user
-    put:
-      description: Actualiza la información de un registro.
-      produces:
-      - text/plain
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.User'
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-      summary: Actualiza un registro
-      tags:
-      - user
   /user/all:
     get:
       description: Retorna una lista de todos los registros almacenados en la base
@@ -227,7 +227,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Agrega un nuevo registro a la base de datos.
+      description: Valida un usuari registrado.
       parameters:
       - description: Información del nuevo registro
         in: body
@@ -246,7 +246,7 @@ paths:
           description: Bad Request
           schema:
             type: string
-      summary: Crea un nuevo registro
+      summary: Login de usuario
       tags:
       - user
 swagger: "2.0"

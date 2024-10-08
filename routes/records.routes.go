@@ -109,7 +109,7 @@ func PutRecordHandler(w http.ResponseWriter, r *http.Request) {
 // @Description Realiza el borrado lógico de un registro específico.
 // @Tags record
 // @Param id path int true "ID del registro"
-// @Success 200 {string} string "Record Deleted"
+// @Success 204 No Content
 // @Failure 404 {string} string "Record Not Found"
 // @Router /record/{id} [delete]
 func DeleteRecordHandler(w http.ResponseWriter, r *http.Request) {
@@ -124,5 +124,5 @@ func DeleteRecordHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	db.DB.Delete(&record) // Borrado lógico
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusNoContent)
 }

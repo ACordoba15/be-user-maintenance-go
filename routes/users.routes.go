@@ -48,8 +48,8 @@ func GetUserHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // LoginUserHandler crea un nuevo registro.
-// @Summary Crea un nuevo registro
-// @Description Agrega un nuevo registro a la base de datos.
+// @Summary Login de usuario
+// @Description Valida un usuari registrado.
 // @Tags user
 // @Accept  json
 // @Produce  json
@@ -124,7 +124,7 @@ func PostUserHandler(w http.ResponseWriter, r *http.Request) {
 // @Produce plain
 // @Success 200 {object} models.User
 // @Failure 400 {string} string "Bad Request"
-// @Router /user/{id} [put]
+// @Router /user [put]
 func PutUserHandler(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 	var userUpdated models.User
@@ -150,12 +150,6 @@ func PutUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if user.ID == 0 {
-		w.WriteHeader(http.StatusNotFound) // 404
-		w.Write([]byte("User Not Found"))
-		return
-	}
-
 	user.Password = userUpdated.Password
 	db.DB.Save(&user)
 	json.NewEncoder(w).Encode(&user)
@@ -166,7 +160,7 @@ func PutUserHandler(w http.ResponseWriter, r *http.Request) {
 // @Description Realiza el borrado lógico de un registro específico.
 // @Tags user
 // @Param id path int true "ID del registro"
-// @Success 200 {string} string "User Deleted"
+// @Success 204 No Content
 // @Failure 404 {string} string "User Not Found"
 // @Router /user/{id} [delete]
 func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
@@ -182,5 +176,5 @@ func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
 
 	db.DB.Delete(&user) // Borrado lógico
 	// db.DB.Unscoped().Delete(&user) // Borrado físico
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusNoContent)
 }
