@@ -43,7 +43,7 @@ func main() {
 	r.HandleFunc("/api/user/{id}", routes.GetUserHandler).Methods("GET")
 	r.HandleFunc("/api/user", routes.PostUserHandler).Methods("POST")
 	r.HandleFunc("/api/user/login", routes.LoginUserHandler).Methods("POST")
-	r.HandleFunc("/api/user/{id}", routes.PutUserHandler).Methods("PUT")
+	r.HandleFunc("/api/user", routes.PutUserHandler).Methods("PUT")
 	r.HandleFunc("/api/user/{id}", routes.DeleteUserHandler).Methods("DELETE")
 
 	// RECORD

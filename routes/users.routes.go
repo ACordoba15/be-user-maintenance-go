@@ -2,11 +2,13 @@ package routes
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/ACordoba15/be-user-maintenance/db"
 	"github.com/ACordoba15/be-user-maintenance/models"
 	"github.com/gorilla/mux"
+	"gorm.io/gorm"
 )
 
 // GetUsersHandler obtiene todos los registros de la base de datos.
@@ -56,7 +58,39 @@ func GetUserHandler(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Bad Request"
 // @Router /user/login [post]
 func LoginUserHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Login"))
+	var user models.User
+	var userLogin models.User
+	err := json.NewDecoder(r.Body).Decode(&user)
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest) // 400
+		w.Write([]byte("Invalid request payload"))
+		return
+	}
+
+	fmt.Printf("user: %s, pass: %s", user.Username, user.Password)
+	// Buscar el usuario por nombre de usuario y contraseña
+	err = db.DB.Where(&models.User{Username: user.Username, Password: user.Password}).First(&userLogin).Error
+
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			w.WriteHeader(http.StatusNotFound) // 404
+			w.Write([]byte("User Not Found"))
+		} else {
+			w.WriteHeader(http.StatusInternalServerError) // 500
+			w.Write([]byte("Internal Server Error"))
+		}
+		return
+	}
+
+	if userLogin.ID == 0 {
+		w.WriteHeader(http.StatusNotFound) // 404
+		w.Write([]byte("User Not Found"))
+		return
+	}
+
+	w.WriteHeader(http.StatusOK) // 200
+	json.NewEncoder(w).Encode(&userLogin)
 }
 
 // PostUserHandler crea un nuevo registro.
@@ -93,11 +127,28 @@ func PostUserHandler(w http.ResponseWriter, r *http.Request) {
 // @Router /user/{id} [put]
 func PutUserHandler(w http.ResponseWriter, r *http.Request) {
 	var user models.User
-	var newUser models.User
-	params := mux.Vars(r) // Obtiene los params
-	db.DB.First(&user, params["id"])
+	var userUpdated models.User
+	err := json.NewDecoder(r.Body).Decode(&userUpdated)
 
-	defer r.Body.Close() // Libera recursos
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest) // 400
+		w.Write([]byte("Invalid request payload"))
+		return
+	}
+
+	// Buscar el usuario por nombre de usuario y contraseña
+	err = db.DB.Where(&models.User{Username: user.Username, Password: user.Password}).First(&user).Error
+
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			w.WriteHeader(http.StatusNotFound) // 404
+			w.Write([]byte("User Not Found"))
+		} else {
+			w.WriteHeader(http.StatusInternalServerError) // 500
+			w.Write([]byte("Internal Server Error"))
+		}
+		return
+	}
 
 	if user.ID == 0 {
 		w.WriteHeader(http.StatusNotFound) // 404
@@ -105,13 +156,7 @@ func PutUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := json.NewDecoder(r.Body).Decode(&newUser)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("Invalid request payload"))
-		return
-	}
-	user.Password = newUser.Password
+	user.Password = userUpdated.Password
 	db.DB.Save(&user)
 	json.NewEncoder(w).Encode(&user)
 }
