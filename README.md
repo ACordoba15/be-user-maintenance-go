@@ -31,11 +31,13 @@
 - `go get github.com/joho/godotenv`
 
 ## Ejcutar el programa
+- `go mod tidy` Ejecuta y limpia dependencias
+
 - `go build <name>.go` Crea un build.
 - `./<name>` Ejecuta el programa.
+
 - `go run <name>.go` Crear el build y lo ejecuta.
 
-- `go mod tidy` Ejecuta y limpia dependencias
 
 
 ## DB
