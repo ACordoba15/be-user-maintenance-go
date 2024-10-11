@@ -25,9 +25,9 @@ func RegisterUserRoutes(r *mux.Router, us *usecase.UserService) {
 	r.HandleFunc("/api/user/{id}", DeleteUserHandler((userService))).Methods("DELETE")
 }
 
-// GetUsersHandler obtiene todos los registros de la base de datos.
-// @Summary Obtiene todos los registros
-// @Description Retorna una lista de todos los registros almacenados en la base de datos.
+// GetUsersHandler obtiene todos los usuarios de la base de datos.
+// @Summary Obtiene todos los usuarios
+// @Description Retorna una lista de todos los usuarios almacenados en la base de datos.
 // @Tags user
 // @Produce  json
 // @Success 200 {array} models.User
@@ -47,11 +47,11 @@ func GetUsersHandler(userService *usecase.UserService) http.HandlerFunc {
 	}
 }
 
-// GetUserHandler obtiene un registro por su ID.
-// @Summary Obtiene un registro por ID
-// @Description Retorna un registro específico basado en el ID proporcionado.
+// GetUserHandler obtiene un usuarios por su ID.
+// @Summary Obtiene un usuarios por ID
+// @Description Retorna un usuarios específico basado en el ID proporcionado.
 // @Tags user
-// @Param id path int true "ID del registro"
+// @Param id path int true "ID del usuario"
 // @Produce  json
 // @Success 200 {object} models.User
 // @Failure 404 {string} string "Record Not Found"
@@ -84,14 +84,14 @@ func GetUserHandler(userService *usecase.UserService) http.HandlerFunc {
 	}
 }
 
-// LoginUserHandler crea un nuevo registro.
+// LoginUserHandler crea un nuevo usuario.
 // @Summary Login de usuario
-// @Description Valida un usuari registrado.
+// @Description Valida un usuario registrado.
 // @Tags user
 // @Accept  json
 // @Produce  json
-// @Param user body models.User true "Información del nuevo registro"
-// @Success 200 {object} models.Record
+// @Param user body models.User true "Información del nuevo usuario"
+// @Success 200 {object} models.User
 // @Failure 400 {string} string "Bad Request"
 // @Router /user/login [post]
 func LoginUserHandler(userService *usecase.UserService) http.HandlerFunc {
@@ -117,14 +117,14 @@ func LoginUserHandler(userService *usecase.UserService) http.HandlerFunc {
 	}
 }
 
-// PostUserHandler crea un nuevo registro.
-// @Summary Crea un nuevo registro
-// @Description Agrega un nuevo registro a la base de datos.
+// PostUserHandler crea un nuevo usuario.
+// @Summary Crea un nuevo usuario
+// @Description Agrega un nuevo usuario a la base de datos.
 // @Tags user
 // @Accept  json
 // @Produce  json
-// @Param user body models.User true "Información del nuevo registro"
-// @Success 200 {object} models.Record
+// @Param user body models.User true "Información del nuevo usuario"
+// @Success 200 {object} models.User
 // @Failure 400 {string} string "Bad Request"
 // @Router /user [post]
 func PostUserHandler(userService *usecase.UserService) http.HandlerFunc {
@@ -150,9 +150,9 @@ func PostUserHandler(userService *usecase.UserService) http.HandlerFunc {
 	}
 }
 
-// PutUserHandler actualiza un registro.
-// @Summary Actualiza un registro
-// @Description Actualiza la información de un registro.
+// PutUserHandler actualiza un usuario.
+// @Summary Actualiza un usuario
+// @Description Actualiza la información de un usuario.
 // @Tags user
 // @Produce plain
 // @Success 200 {object} models.User
@@ -187,11 +187,11 @@ func PutUserHandler(userService *usecase.UserService) http.HandlerFunc {
 	}
 }
 
-// DeleteUserHandler elimina un registro por su ID.
-// @Summary Elimina un registro por ID
-// @Description Realiza el borrado lógico de un registro específico.
+// DeleteUserHandler elimina un usuario por su ID.
+// @Summary Elimina un usuario por ID
+// @Description Realiza el borrado lógico de un usuario específico.
 // @Tags user
-// @Param id path int true "ID del registro"
+// @Param id path int true "ID del usuario"
 // @Success 204 No Content
 // @Failure 404 {string} string "User Not Found"
 // @Router /user/{id} [delete]
