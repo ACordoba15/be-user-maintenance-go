@@ -3,8 +3,8 @@ package routes
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
-	"github.com/ACordoba15/be-user-maintenance/db"
 	"github.com/ACordoba15/be-user-maintenance/internal/domain/models"
 	"github.com/ACordoba15/be-user-maintenance/internal/usecase"
 	"github.com/gorilla/mux"
@@ -16,10 +16,10 @@ func RegisterRecordRoutes(r *mux.Router, rs *usecase.RecordService) {
 	recordService = rs
 
 	r.HandleFunc("/api/record/all", GetRecordsHandler(recordService)).Methods("GET")
-	r.HandleFunc("/api/record/{id}", GetRecordHandler).Methods("GET")
-	r.HandleFunc("/api/record", PostRecordHandler).Methods("POST")
-	r.HandleFunc("/api/record/{id}", PutRecordHandler).Methods("PUT")
-	r.HandleFunc("/api/record/{id}", DeleteRecordHandler).Methods("DELETE")
+	r.HandleFunc("/api/record/{id}", GetRecordHandler(recordService)).Methods("GET")
+	r.HandleFunc("/api/record", PostRecordHandler(recordService)).Methods("POST")
+	r.HandleFunc("/api/record/{id}", PutRecordHandler(recordService)).Methods("PUT")
+	r.HandleFunc("/api/record/{id}", DeleteRecordHandler(recordService)).Methods("DELETE")
 }
 
 // GetRecordsHandler obtiene todos los registros de la base de datos.
@@ -31,7 +31,8 @@ func RegisterRecordRoutes(r *mux.Router, rs *usecase.RecordService) {
 // @Router /record/all [get]
 func GetRecordsHandler(recordService *usecase.RecordService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		records, err := recordService.GetAllRecords()
+		records, err := recordService.GetAll()
+
 		if err != nil {
 			http.Error(w, "Error al obtener los registros", http.StatusInternalServerError)
 			return
@@ -52,18 +53,32 @@ func GetRecordsHandler(recordService *usecase.RecordService) http.HandlerFunc {
 // @Success 200 {object} models.Record
 // @Failure 404 {string} string "Record Not Found"
 // @Router /record/{id} [get]
-func GetRecordHandler(w http.ResponseWriter, r *http.Request) {
-	var record models.Record
-	params := mux.Vars(r)
-	db.DB.First(&record, params["id"])
+func GetRecordHandler(recordService *usecase.RecordService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		params := mux.Vars(r)
+		id, err := strconv.Atoi(params["id"])
 
-	if record.ID == 0 {
-		w.WriteHeader(http.StatusNotFound)
-		w.Write([]byte("Record Not Found"))
-		return
+		if err != nil {
+			http.Error(w, "Request inválido", http.StatusBadRequest)
+			return
+		}
+
+		record, err := recordService.GetById(id)
+
+		if err != nil {
+			http.Error(w, "Error al obtener el registro", http.StatusInternalServerError)
+			return
+		}
+
+		if record.ID == 0 {
+			http.Error(w, "Registro no encontrado", http.StatusNotFound)
+			return
+		}
+
+		// Serializa los usuarios a JSON y envía la respuesta
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(record)
 	}
-
-	json.NewEncoder(w).Encode(&record)
 }
 
 // PostRecordHandler crea un nuevo registro.
@@ -76,20 +91,27 @@ func GetRecordHandler(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} models.Record
 // @Failure 400 {string} string "Bad Request"
 // @Router /record [post]
-func PostRecordHandler(w http.ResponseWriter, r *http.Request) {
-	var record models.Record
-	json.NewDecoder(r.Body).Decode(&record)
-	defer r.Body.Close()
+func PostRecordHandler(recordService *usecase.RecordService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var record models.Record
+		err := json.NewDecoder(r.Body).Decode(&record)
 
-	newrecord := db.DB.Create(&record)
-	err := newrecord.Error
+		if err != nil {
+			http.Error(w, "Request inválido", http.StatusBadRequest)
+			return
+		}
 
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest) // 400
-		w.Write([]byte(err.Error()))
+		newRecord, err := recordService.AddRecord(record)
+
+		if err != nil {
+			http.Error(w, "Error al agregar el registro.", http.StatusInternalServerError)
+			return
+		}
+
+		// Serializa los usuarios a JSON y envía la respuesta
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(newRecord)
 	}
-
-	json.NewEncoder(w).Encode(&record)
 }
 
 // PutRecordHandler actualiza un registro.
@@ -100,29 +122,35 @@ func PostRecordHandler(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} models.Record
 // @Failure 400 {string} string "Bad Request"
 // @Router /record/{id} [put]
-func PutRecordHandler(w http.ResponseWriter, r *http.Request) {
-	var record models.Record
-	var newRecord models.Record
-	params := mux.Vars(r) // Obtiene los params
-	db.DB.First(&record, params["id"])
+func PutRecordHandler(recordService *usecase.RecordService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var record models.Record
+		err := json.NewDecoder(r.Body).Decode(&record)
 
-	defer r.Body.Close() // Libera recursos
+		if err != nil {
+			http.Error(w, "Request inválido", http.StatusBadRequest)
+			return
+		}
 
-	if record.ID == 0 {
-		w.WriteHeader(http.StatusNotFound) // 404
-		w.Write([]byte("Record Not Found"))
-		return
+		params := mux.Vars(r)
+		id, err := strconv.Atoi(params["id"])
+
+		if err != nil {
+			http.Error(w, "Request inválido", http.StatusBadRequest)
+			return
+		}
+
+		updatedRecord, err := recordService.UpdateRecord(record, id)
+
+		if err != nil {
+			http.Error(w, "Error al actualizar el registro.", http.StatusInternalServerError)
+			return
+		}
+
+		// Serializa los usuarios a JSON y envía la respuesta
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(updatedRecord)
 	}
-
-	err := json.NewDecoder(r.Body).Decode(&newRecord)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("Invalid request payload"))
-		return
-	}
-	record.Action = newRecord.Action
-	db.DB.Save(&record)
-	json.NewEncoder(w).Encode(&record)
 }
 
 // DeleteRecordHandler elimina un registro por su ID.
@@ -133,17 +161,25 @@ func PutRecordHandler(w http.ResponseWriter, r *http.Request) {
 // @Success 204 No Content
 // @Failure 404 {string} string "Record Not Found"
 // @Router /record/{id} [delete]
-func DeleteRecordHandler(w http.ResponseWriter, r *http.Request) {
-	var record models.Record
-	params := mux.Vars(r)
-	db.DB.First(&record, params["id"])
+func DeleteRecordHandler(recordService *usecase.RecordService) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		params := mux.Vars(r)
+		id, err := strconv.Atoi(params["id"])
 
-	if record.ID == 0 {
-		w.WriteHeader(http.StatusNotFound) // 404
-		w.Write([]byte("Record Not Found"))
-		return
+		if err != nil {
+			http.Error(w, "Request inválido", http.StatusBadRequest)
+			return
+		}
+
+		err = recordService.DeleteRecord(id)
+
+		if err != nil {
+			http.Error(w, "Registro no encontrado", http.StatusNotFound)
+			return
+		}
+
+		// Serializa los usuarios a JSON y envía la respuesta
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusNoContent)
 	}
-
-	db.DB.Delete(&record) // Borrado lógico
-	w.WriteHeader(http.StatusNoContent)
 }

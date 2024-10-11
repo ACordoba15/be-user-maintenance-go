@@ -69,7 +69,7 @@ func GetUserHandler(userService *usecase.UserService) http.HandlerFunc {
 		user, err := userService.GetById(id)
 
 		if err != nil {
-			http.Error(w, "Usuario no encontrado", http.StatusInternalServerError)
+			http.Error(w, "Error al obtener el usuario", http.StatusInternalServerError)
 			return
 		}
 
