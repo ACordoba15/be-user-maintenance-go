@@ -169,14 +169,14 @@ const docTemplate = `{
         },
         "/user": {
             "put": {
-                "description": "Actualiza la información de un registro.",
+                "description": "Actualiza la información de un usuario.",
                 "produces": [
                     "text/plain"
                 ],
                 "tags": [
                     "user"
                 ],
-                "summary": "Actualiza un registro",
+                "summary": "Actualiza un usuario",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -193,7 +193,7 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "Agrega un nuevo registro a la base de datos.",
+                "description": "Agrega un nuevo usuario a la base de datos.",
                 "consumes": [
                     "application/json"
                 ],
@@ -203,10 +203,10 @@ const docTemplate = `{
                 "tags": [
                     "user"
                 ],
-                "summary": "Crea un nuevo registro",
+                "summary": "Crea un nuevo usuario",
                 "parameters": [
                     {
-                        "description": "Información del nuevo registro",
+                        "description": "Información del nuevo usuario",
                         "name": "user",
                         "in": "body",
                         "required": true,
@@ -219,7 +219,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Record"
+                            "$ref": "#/definitions/models.User"
                         }
                     },
                     "400": {
@@ -233,14 +233,14 @@ const docTemplate = `{
         },
         "/user/all": {
             "get": {
-                "description": "Retorna una lista de todos los registros almacenados en la base de datos.",
+                "description": "Retorna una lista de todos los usuarios almacenados en la base de datos.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "user"
                 ],
-                "summary": "Obtiene todos los registros",
+                "summary": "Obtiene todos los usuarios",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -256,7 +256,7 @@ const docTemplate = `{
         },
         "/user/login": {
             "post": {
-                "description": "Valida un usuari registrado.",
+                "description": "Valida un usuario registrado.",
                 "consumes": [
                     "application/json"
                 ],
@@ -269,7 +269,7 @@ const docTemplate = `{
                 "summary": "Login de usuario",
                 "parameters": [
                     {
-                        "description": "Información del nuevo registro",
+                        "description": "Información del nuevo usuario",
                         "name": "user",
                         "in": "body",
                         "required": true,
@@ -282,7 +282,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Record"
+                            "$ref": "#/definitions/models.User"
                         }
                     },
                     "400": {
@@ -296,18 +296,18 @@ const docTemplate = `{
         },
         "/user/{id}": {
             "get": {
-                "description": "Retorna un registro específico basado en el ID proporcionado.",
+                "description": "Retorna un usuarios específico basado en el ID proporcionado.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "user"
                 ],
-                "summary": "Obtiene un registro por ID",
+                "summary": "Obtiene un usuarios por ID",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "ID del registro",
+                        "description": "ID del usuario",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -329,15 +329,15 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "Realiza el borrado lógico de un registro específico.",
+                "description": "Realiza el borrado lógico de un usuario específico.",
                 "tags": [
                     "user"
                 ],
-                "summary": "Elimina un registro por ID",
+                "summary": "Elimina un usuario por ID",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "ID del registro",
+                        "description": "ID del usuario",
                         "name": "id",
                         "in": "path",
                         "required": true

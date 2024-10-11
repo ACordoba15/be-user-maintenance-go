@@ -126,9 +126,9 @@ paths:
     post:
       consumes:
       - application/json
-      description: Agrega un nuevo registro a la base de datos.
+      description: Agrega un nuevo usuario a la base de datos.
       parameters:
-      - description: Información del nuevo registro
+      - description: Información del nuevo usuario
         in: body
         name: user
         required: true
@@ -140,16 +140,16 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Record'
+            $ref: '#/definitions/models.User'
         "400":
           description: Bad Request
           schema:
             type: string
-      summary: Crea un nuevo registro
+      summary: Crea un nuevo usuario
       tags:
       - user
     put:
-      description: Actualiza la información de un registro.
+      description: Actualiza la información de un usuario.
       produces:
       - text/plain
       responses:
@@ -161,14 +161,14 @@ paths:
           description: Bad Request
           schema:
             type: string
-      summary: Actualiza un registro
+      summary: Actualiza un usuario
       tags:
       - user
   /user/{id}:
     delete:
-      description: Realiza el borrado lógico de un registro específico.
+      description: Realiza el borrado lógico de un usuario específico.
       parameters:
-      - description: ID del registro
+      - description: ID del usuario
         in: path
         name: id
         required: true
@@ -182,13 +182,13 @@ paths:
           description: User Not Found
           schema:
             type: string
-      summary: Elimina un registro por ID
+      summary: Elimina un usuario por ID
       tags:
       - user
     get:
-      description: Retorna un registro específico basado en el ID proporcionado.
+      description: Retorna un usuarios específico basado en el ID proporcionado.
       parameters:
-      - description: ID del registro
+      - description: ID del usuario
         in: path
         name: id
         required: true
@@ -204,12 +204,12 @@ paths:
           description: Record Not Found
           schema:
             type: string
-      summary: Obtiene un registro por ID
+      summary: Obtiene un usuarios por ID
       tags:
       - user
   /user/all:
     get:
-      description: Retorna una lista de todos los registros almacenados en la base
+      description: Retorna una lista de todos los usuarios almacenados en la base
         de datos.
       produces:
       - application/json
@@ -220,16 +220,16 @@ paths:
             items:
               $ref: '#/definitions/models.User'
             type: array
-      summary: Obtiene todos los registros
+      summary: Obtiene todos los usuarios
       tags:
       - user
   /user/login:
     post:
       consumes:
       - application/json
-      description: Valida un usuari registrado.
+      description: Valida un usuario registrado.
       parameters:
-      - description: Información del nuevo registro
+      - description: Información del nuevo usuario
         in: body
         name: user
         required: true
@@ -241,7 +241,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Record'
+            $ref: '#/definitions/models.User'
         "400":
           description: Bad Request
           schema:
