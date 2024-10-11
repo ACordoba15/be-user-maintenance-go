@@ -29,8 +29,8 @@ func (s *RecordService) AddRecord(record models.Record) (models.Record, error) {
 }
 
 // UpdateRecord actualiza un registro
-func (s *RecordService) UpdateRecord(newRecord models.Record, id int) (models.Record, error) {
-	return s.repo.UpdateRecord(newRecord, id)
+func (s *RecordService) UpdateRecord(action string, id int) (models.Record, error) {
+	return s.repo.UpdateRecord(action, id)
 }
 
 // DeleteRecord elimina un registro de forma lógica

@@ -65,7 +65,7 @@ func TestGetAllUsers(t *testing.T) {
 	mockRepo.AssertExpectations(t)
 }
 
-func TestGetById(t *testing.T) {
+func TestGetUserById(t *testing.T) {
 	mockRepo := new(MockUserRepository)
 	userService := usecase.NewUserService(mockRepo)
 

@@ -11,7 +11,7 @@ type RecordRepository interface {
 	GetAll() ([]models.Record, error)
 	GetById(id int) (models.Record, error)
 	AddRecord(record models.Record) (models.Record, error)
-	UpdateRecord(newRecord models.Record, id int) (models.Record, error)
+	UpdateRecord(action string, id int) (models.Record, error)
 	DeleteRecord(id int) error
 }
 
@@ -58,7 +58,7 @@ func (r *recordRepository) AddRecord(user models.Record) (models.Record, error) 
 }
 
 // Actualiza un usuario existente por usename
-func (r *recordRepository) UpdateRecord(newRecord models.Record, id int) (models.Record, error) {
+func (r *recordRepository) UpdateRecord(action string, id int) (models.Record, error) {
 	var record models.Record
 	result := r.db.First(&record, id).Error
 
@@ -66,7 +66,7 @@ func (r *recordRepository) UpdateRecord(newRecord models.Record, id int) (models
 		return models.Record{}, result
 	}
 
-	record.Action = newRecord.Action
+	record.Action = action
 	result = db.DB.Save(&record).Error
 	return record, result
 }

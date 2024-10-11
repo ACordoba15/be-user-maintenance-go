@@ -140,7 +140,7 @@ func PutRecordHandler(recordService *usecase.RecordService) http.HandlerFunc {
 			return
 		}
 
-		updatedRecord, err := recordService.UpdateRecord(record, id)
+		updatedRecord, err := recordService.UpdateRecord(record.Action, id)
 
 		if err != nil {
 			http.Error(w, "Error al actualizar el registro.", http.StatusInternalServerError)
