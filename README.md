@@ -21,14 +21,17 @@
 [CORS](https://github.com/rs/cors)
 - `go get -u github.com/rs/cors`
 
-[Swagger](https://github.com/swaggo/swag?tab=readme-ov-file#getting-started)
+[Swagger](https://github.com/swaggo/swag?tab=readme-ov-file#getting-started) Documentación del API
 - `go install github.com/swaggo/swag/cmd/swag@latest`
 - `go get -u github.com/swaggo/http-swagger`
 - `go get -u github.com/swaggo/files`
 - `swag init` Actualiza el swagger
 
-[GoDotEnv](https://github.com/joho/godotenv)
+[GoDotEnv](https://github.com/joho/godotenv) Variables de ambiente
 - `go get github.com/joho/godotenv`
+
+[Testify](https://github.com/stretchr/testify) Pruebas unitarias
+- `go get github.com/stretchr/testify`
 
 ## Ejcutar el programa
 - `go mod tidy` Ejecuta y limpia dependencias
