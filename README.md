@@ -41,7 +41,15 @@
 
 - `go run <name>.go` Crear el build y lo ejecuta.
 
+- `air` Ejecuta el proyecto y lee los cambios
 
+
+## ENV
+DB_SERVER=localhost
+DB_PORT=1433
+DB_USER=sa
+DB_PASSWORD=Prueba001.
+DB_NAME=tdusers-go
 
 ## DB
 - `docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=password" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2022-latest`
